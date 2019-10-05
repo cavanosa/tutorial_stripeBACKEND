@@ -23,4 +23,18 @@ public class StripeController {
         String paymentStr = paymentIntent.toJson();
         return new ResponseEntity<String>(paymentStr, HttpStatus.OK);
     }
+
+    @PostMapping("/confirm/{id}")
+    public ResponseEntity<String> confirm(@PathVariable("id") String id) throws StripeException {
+        PaymentIntent paymentIntent = paymentService.confirm(id);
+        String paymentStr = paymentIntent.toJson();
+        return new ResponseEntity<String>(paymentStr, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<String> cancel(@PathVariable("id") String id) throws StripeException {
+        PaymentIntent paymentIntent = paymentService.cancel(id);
+        String paymentStr = paymentIntent.toJson();
+        return new ResponseEntity<String>(paymentStr, HttpStatus.OK);
+    }
 }

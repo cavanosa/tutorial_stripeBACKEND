@@ -2,12 +2,13 @@ package com.cavanosa.TutorialStripe.http;
 
 public class PaymentIntentDto {
     public enum Currency{
-        USD, EUR;
+        usd, eur;
     }
 
     private String description;
     private int amount;
     private Currency currency;
+
 
     public String getDescription() {
         return description;

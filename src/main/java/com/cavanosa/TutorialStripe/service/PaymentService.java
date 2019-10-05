@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,13 +20,29 @@ public class PaymentService {
 
     public PaymentIntent paymentIntent(PaymentIntentDto paymentIntentDto) throws StripeException {
         Stripe.apiKey = secretKey;
+        List<String> paymentMethodTypes = new ArrayList();
+        paymentMethodTypes.add("card");
         Map<String, Object> params = new HashMap<>();
         params.put("amount", paymentIntentDto.getAmount());
-        params.put("currency", PaymentIntentDto.Currency.EUR);
+        params.put("currency", PaymentIntentDto.Currency.eur);
         params.put("description", paymentIntentDto.getDescription());
-        ArrayList payment_method_types = new ArrayList();
-        payment_method_types.add("card");
-        params.put("payment_method_types", payment_method_types);
+        params.put("payment_method_types", paymentMethodTypes);
         return PaymentIntent.create(params);
+    }
+
+    public PaymentIntent confirm(String id) throws StripeException {
+        Stripe.apiKey = secretKey;
+        PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
+        Map<String, Object> params = new HashMap<>();
+        params.put("payment_method", "pm_card_visa");
+        paymentIntent.confirm(params);
+        return paymentIntent;
+    }
+
+    public PaymentIntent cancel(String id) throws StripeException {
+        Stripe.apiKey = secretKey;
+        PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
+        paymentIntent.cancel();
+        return paymentIntent;
     }
 }
