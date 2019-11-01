@@ -24,7 +24,7 @@ public class PaymentService {
         paymentMethodTypes.add("card");
         Map<String, Object> params = new HashMap<>();
         params.put("amount", paymentIntentDto.getAmount());
-        params.put("currency", PaymentIntentDto.Currency.eur);
+        params.put("currency", paymentIntentDto.getCurrency());
         params.put("description", paymentIntentDto.getDescription());
         params.put("payment_method_types", paymentMethodTypes);
         return PaymentIntent.create(params);
